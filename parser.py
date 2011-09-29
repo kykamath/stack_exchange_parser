@@ -34,7 +34,7 @@ def iterateComments(data_path, rowType=COMMENT,interstedKeys = 'Id PostId Creati
 def createOutputFileFor(current_data_path, iterators):
     numberOfSplit = 10
     totalLines = 0
-    tempDir = '%s/temp'%current_data_path
+    tempDir = '%s/temp/'%current_data_path
     allDataFile = tempDir+'data.txt'
     if not os.path.exists(tempDir):  os.umask(0), os.makedirs(tempDir, 0777)
     for iterator in iterators:
