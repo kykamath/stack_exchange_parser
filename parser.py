@@ -43,7 +43,7 @@ class Iterator:
 
 def iterateDataOrderedByTime(iterators):
     while len(iterators)>0:
-        nextIteratorWithSmallestValue = min(iterators, key=lambda it: it.current['CreationDate'])
+        nextIteratorWithSmallestValue = min(iterators, key=lambda it: dateutil.parser.parse(it.current['CreationDate']))
         yield nextIteratorWithSmallestValue.current
         if nextIteratorWithSmallestValue.setCurrent(): iterators.remove(nextIteratorWithSmallestValue)
         
@@ -72,7 +72,7 @@ def createOutputFileFor(current_data_path, iterators):
     [sortFile(file) for file in glob.glob( os.path.join(tempDir, '*') ) if file!=allDataFile]
     
     i = 1
-    for data in iterateDataOrderedByTime([FileIO.iterateJsonFromFile(file) for file in glob.glob( os.path.join(tempDir, '*')) if file!=allDataFile]):
+    for data in iterateDataOrderedByTime([Iterator(FileIO.iterateJsonFromFile(file)) for file in glob.glob( os.path.join(tempDir, '*')) if file!=allDataFile]):
         print i, data['RowType'], data['CreationDate']
         i+=1
 
