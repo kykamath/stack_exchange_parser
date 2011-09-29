@@ -7,8 +7,8 @@ from lxml import etree
 import dateutil.parser, os, cjson, glob
 from library.file_io import FileIO
 
-#current_data_path = '/mnt/chevron/kykamath/data/stack_exchange/Content/android_enthusiasts/'
-current_data_path = '/mnt/chevron/kykamath/data/stack_exchange/Content/server_fault/'
+current_data_path = '/mnt/chevron/kykamath/data/stack_exchange/Content/android_enthusiasts/'
+#current_data_path = '/mnt/chevron/kykamath/data/stack_exchange/Content/server_fault/'
 POST='post'
 COMMENT='comment'
 
@@ -56,7 +56,7 @@ def sortFile(fileName):
     f.close()
 
 def createOutputFileFor(current_data_path, iterators):
-    numberOfSplit = 10
+    numberOfSplit = 25
     totalLines = 0
     tempDir = '%s/temp/'%current_data_path
     allDataFile = tempDir+'data.txt'
@@ -72,15 +72,10 @@ def createOutputFileFor(current_data_path, iterators):
     [sortFile(file) for file in glob.glob( os.path.join(tempDir, '*') ) if file!=allDataFile]
     
     i = 1
+    timelineFile = current_data_path+'timeline.txt'
     for data in iterateDataOrderedByTime([Iterator(FileIO.iterateJsonFromFile(file)) for file in glob.glob( os.path.join(tempDir, '*')) if file!=allDataFile]):
-        print i, data['RowType'], data['CreationDate']
+        print i, data['CreationDate'], data['RowType']
+        FileIO.writeToFileAsJson(data, timelineFile)
         i+=1
 
 createOutputFileFor(current_data_path, [iteratePosts(current_data_path), iterateComments(current_data_path)])
-
-#sortFile('/mnt/chevron/kykamath/data/stack_exchange/Content/android_enthusiasts/temp/xaa')
-
-#i = 1
-#for data in iterateDataOrderedByTime([Iterator(iterateComments(current_data_path)), Iterator(iteratePosts(current_data_path))]):
-#    print i, data['RowType'], data['CreationDate']
-#    i+=1
