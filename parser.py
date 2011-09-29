@@ -29,5 +29,3 @@ i = 1
 for l in iterateComments(current_data_path):
     print i, l
     i+=1
-
-    
