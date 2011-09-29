@@ -36,7 +36,7 @@ def createOutputFileFor(current_data_path, iterators):
     totalLines = 0
     tempDir = '%s/temp'%current_data_path
     allDataFile = tempDir+'data.txt'
-    os.umask(0), os.makedirs(tempDir, 0777)
+    if not os.path.exists(tempDir):  os.umask(0), os.makedirs(tempDir, 0777)
     for iterator in iterators:
         for data in iterator: 
             totalLines+=1
