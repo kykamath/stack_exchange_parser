@@ -55,7 +55,7 @@ def sortFile(fileName):
     os.system('mv %s_sorted %s'%(fileName, fileName))
     f.close()
 
-def createOutputFileFor(current_data_path, iterators):
+def createTimelineFileFor(current_data_path, iterators):
     numberOfSplit = 25
     totalLines = 0
     tempDir = '%s/temp/'%current_data_path
@@ -78,4 +78,4 @@ def createOutputFileFor(current_data_path, iterators):
         FileIO.writeToFileAsJson(data, timelineFile)
         i+=1
 
-createOutputFileFor(current_data_path, [iteratePosts(current_data_path), iterateComments(current_data_path)])
+createTimelineFileFor(current_data_path, [iteratePosts(current_data_path), iterateComments(current_data_path)])
