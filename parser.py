@@ -7,7 +7,7 @@ from lxml import etree
 import dateutil.parser, os
 from library.file_io import FileIO
 
-current_data_path = '/mnt/chevron/kykamath/data/stack_exchange/Content/android_enthusiasts'
+current_data_path = '/mnt/chevron/kykamath/data/stack_exchange/Content/android_enthusiasts/'
 #current_data_path = '/mnt/chevron/kykamath/data/stack_exchange/Content/server_fault/'
 POST='post'
 COMMENT='comment'
