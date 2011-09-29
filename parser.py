@@ -7,8 +7,12 @@ from lxml import etree
 import dateutil.parser, os, cjson, glob
 from library.file_io import FileIO
 
+#13977656
+#544188
+
 #current_data_path = '/mnt/chevron/kykamath/data/stack_exchange/Content/android_enthusiasts/'
-current_data_path = '/mnt/chevron/kykamath/data/stack_exchange/Content/server_fault/'
+#current_data_path = '/mnt/chevron/kykamath/data/stack_exchange/Content/server_fault/'
+current_data_path = '/mnt/chevron/kykamath/data/stack_exchange/Content/stack_overflow'
 POST='post'
 COMMENT='comment'
 
