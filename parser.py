@@ -24,6 +24,7 @@ def iteratePosts(data_path, interstedKeys = 'Id PostTypeId ParentID CreationDate
     for l in iterateRows(data_path+'posts.xml', interstedKeys): yield l
 def iterateComments(data_path, interstedKeys = 'Id PostId CreationDate UserId'.split()):
     for l in iterateRows(data_path+'comments.xml', interstedKeys): yield l
+def iterateDataIn
 
 i = 1
 for l in iterateComments(current_data_path):
