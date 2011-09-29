@@ -6,9 +6,12 @@ Created on Sep 29, 2011
 from lxml import etree
 import dateutil.parser
 
-current_data_path = 'android_enthusiasts/'
+#current_data_path = 'android_enthusiasts/'
+current_data_path = '/mnt/chevron/kykamath/data/stack_exchange/Content/server_fault/'
+POST='post'
+COMMENT='comment'
 
-def iterateRows(file, interstedKeys=[]):
+def iterateRows(file, rowType, interstedKeys=[]):
     for line in open(file):
         if line.strip().startswith('<row'): 
             dataToYield = dict([(k, etree.fromstring(line).attrib[k]) for k in interstedKeys if k in etree.fromstring(line).attrib])
@@ -18,15 +21,32 @@ def iterateRows(file, interstedKeys=[]):
                     if dataToYield[k]!='':dataToYield[k]=int(dataToYield[k])
                     else: dataToYield[k]=0
                 elif k=='Tags': dataToYield[k] = dataToYield[k][1:-1].split('><')
+            dataToYield['RowType'] = rowType
             yield dataToYield
             
-def iteratePosts(data_path, interstedKeys = 'Id PostTypeId ParentID CreationDate ViewCount OwnerUserId Tags AnswerCount CommentCount FavoriteCount'.split()):
-    for l in iterateRows(data_path+'posts.xml', interstedKeys): yield l
-def iterateComments(data_path, interstedKeys = 'Id PostId CreationDate UserId'.split()):
-    for l in iterateRows(data_path+'comments.xml', interstedKeys): yield l
-def iterateDataIn
+def iteratePosts(data_path, rowType=POST, interstedKeys = 'Id PostTypeId ParentID CreationDate ViewCount OwnerUserId Tags AnswerCount CommentCount FavoriteCount'.split()):
+    for l in iterateRows(data_path+'posts.xml', rowType, interstedKeys): yield l
+
+def iterateComments(data_path, rowType=COMMENT,interstedKeys = 'Id PostId CreationDate UserId'.split()):
+    for l in iterateRows(data_path+'comments.xml', rowType, interstedKeys): yield l
+
+class Iterator:
+        def __init__(self, iterator): 
+            self.iterator, self.empty = iterator, False
+            self.setCurrent()
+        def setCurrent(self): 
+            try:
+                self.current = self.iterator.next()
+            except StopIteration: self.empty = True
+            return self.empty
+
+def iterateDataOrderedByTime(iterators):
+    while len(iterators)>0:
+        nextIteratorWithSmallestValue = min(iterators, key=lambda it: it.current['CreationDate'])
+        yield nextIteratorWithSmallestValue.current
+        if nextIteratorWithSmallestValue.setCurrent(): iterators.remove(nextIteratorWithSmallestValue)
 
 i = 1
-for l in iterateComments(current_data_path):
-    print i, l
+for data in iterateDataOrderedByTime([Iterator(iterateComments(current_data_path)), Iterator(iteratePosts(current_data_path))]):
+    print i, data['RowType'], data['CreationDate']
     i+=1
