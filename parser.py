@@ -42,7 +42,7 @@ def createOutputFileFor(current_data_path, iterators):
             totalLines+=1
             FileIO.writeToFileAsJson(data, allDataFile)
     linesPerFile = totalLines/numberOfSplit
-    os.system('cd %s'%tempDir)
+    os.chdir(tempDir)
     os.system('split -l %s %s'%(linesPerFile, allDataFile))
     
     
